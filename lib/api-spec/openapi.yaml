@@ -1,0 +1,109 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: contact
+    description: Contact and booking requests
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /contact:
+    post:
+      operationId: createContactSubmission
+      tags: [contact]
+      summary: Submit a contact or call-booking request
+      description: Stores a message or a request to book a call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSubmission"
+        "400":
+          description: Invalid submission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ContactInput:
+      type: object
+      required: [type, name, email]
+      properties:
+        type:
+          type: string
+          enum: [message, call]
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+          minLength: 3
+        company:
+          type: string
+        message:
+          type: string
+        preferredTime:
+          type: string
+    ContactSubmission:
+      type: object
+      required: [id, type, name, email, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        company:
+          type: ["string", "null"]
+        message:
+          type: ["string", "null"]
+        preferredTime:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
