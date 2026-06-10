@@ -1,6 +1,6 @@
 {
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
+  "buildCommand": "pnpm --filter @workspace/little-pilot run build",
+  "outputDirectory": "artifacts/little-pilot/dist/public",
   "installCommand": "pnpm install",
   "framework": "vite"
 }
