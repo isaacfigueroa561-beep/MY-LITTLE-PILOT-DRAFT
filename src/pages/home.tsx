@@ -7,7 +7,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 
-import { useCreateContactSubmission } from "@workspace/api-client-react";
+
 import { toast } from "@/hooks/use-toast";
 
 import logoOrangePath from "@assets/lp-logo-red.png";
@@ -1856,7 +1856,12 @@ function ContactModal() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ContactMode>("message");
   const [form, setForm] = useState(EMPTY_FORM);
-  const { mutateAsync, isPending } = useCreateContactSubmission();
+  const [isPending, setIsPending] = useState(false);
+  const mutateAsync = async ({ data }: { data: any }) => {
+    const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    if (!res.ok) throw new Error("Failed to submit");
+    return res.json();
+  };
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
 
