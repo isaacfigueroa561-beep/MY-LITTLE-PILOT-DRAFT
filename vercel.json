@@ -1,6 +1,1 @@
-{
-  "buildCommand": "pnpm --filter @workspace/little-pilot run build",
-  "outputDirectory": "artifacts/little-pilot/dist/public",
-  "installCommand": "corepack enable && pnpm install --frozen-lockfile",
-  "framework": "vite"
-}
+{"installCommand": "pnpm install --no-frozen-lockfile"}
